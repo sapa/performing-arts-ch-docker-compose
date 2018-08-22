@@ -28,6 +28,26 @@ services:
    options:
     max-size: "200k"
     max-file: "10"
+ 
+ cron-backups:
+  container_name: "${COMPOSE_PROJECT_NAME}-cron-backup"
+  restart: unless-stopped
+  build:
+    context: ../cron-backup
+  environment:
+    - CRON_SCHEDULE=${BACKUP_CRON_SCHEDULE}
+    - BACKUP_NAME=${COMPOSE_PROJECT_NAME}-backup
+    - FOLDERS_TO_BACKUP=/data /config
+    - NUMBER_OF_BACKUPS_TO_KEEP=${BACKUP_RETENTION_NUMBER}
+  volumes:
+    - /backups
+  volumes_from:
+    - metaphactory
+  depends_on:
+    - metaphactory
+  restart: always
+  networks:
+    - metaphactory_network
 
 networks:
   default:

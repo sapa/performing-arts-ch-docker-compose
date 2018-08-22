@@ -12,3 +12,13 @@ services:
     #  - "10214:8080"
     #environment:
     #  - JAVA_OPTS=-Xmx1g
+  cron-backups:
+    #volumes:
+      # mount a host volume i.e.  where the backups should be moved
+      #- /your/host/file/system/backup:/backups:rw
+    #environment:
+      #only if you want to store backups in addition into a S3 bucket     
+      #- AWS_ACCESS_KEY_ID=accesskey
+      #- AWS_SECRET_ACCESS_KEY=yoursecretaccesskey
+      #- S3_BUCKET_URL=s3://you-backup-bucket/
+      #- AWS_DEFAULT_REGION=eu-west-1

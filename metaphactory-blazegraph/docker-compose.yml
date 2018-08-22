@@ -30,3 +30,11 @@ services:
   depends_on:
        - metaphactory-data
        - blazegraph
+
+ cron-backups:
+  environment:
+    - FOLDERS_TO_BACKUP=/data /config /blazegraph-data
+  volumes_from:
+    - blazegraph
+  depends_on:
+    - blazegraph
