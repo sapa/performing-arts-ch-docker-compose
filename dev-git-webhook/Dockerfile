@@ -3,8 +3,8 @@ FROM staticfloat/docker-webhook@sha256:b9e49f1473497df08993a1059b8356064aae6c5bc
 RUN mkdir /code
 COPY ./code /code
 
-RUN chmod -R u+x /code/hooks
+RUN chmod -R u+x /code
 WORKDIR /app
-CMD ["/bin/bash", "/code/init.sh"]
-CMD ["python", "webhook_listener.py"]
+
+CMD ["sh", "-c", "/code/init.sh && python webhook_listener.py"]
 EXPOSE 8000
