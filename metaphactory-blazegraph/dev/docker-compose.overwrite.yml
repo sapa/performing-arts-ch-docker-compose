@@ -1,0 +1,43 @@
+version: "2.2"
+services:
+  blazegraph:
+    #blazegraph-overwites here
+    #ports:
+    #  - "10214:8080"
+    environment:
+      - JAVA_OPTS=-Xmx3g
+    volumes:
+      - /data/dev/blazegraph-journal/:/blazegraph-data:rw
+      - /data/dev/rdf-data:/datasets:ro
+  metaphactory:
+    #metaphactory-overwites here
+    #ports:
+    #  - "10214:8080"
+    environment:
+      - JAVA_OPTS=-Xmx1g
+    volumes:
+      - /data/dev/researchspace-runtime-data/:/host-runtime-data
+  metaphactory-dev-webhook:
+    container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook" 
+    restart: unless-stopped
+    build:
+      context: ../dev-git-webhook
+    environment:
+     - VIRTUAL_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME} 
+     - LETSENCRYPT_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
+     - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+     - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+     - WEBHOOK_HOOKS_DIR=/code/hooks
+     - WEBHOOK_BRANCH_LIST=develop
+     - WEBHOOK_APP_DIRECTORY=performing-arts-ch
+     - WEBHOOK_GIT_REPOSITORY=https://github.com/sapa/performing-arts-ch-templates.git
+    volumes_from:
+     - metaphactory
+    #optionally mount additional hook scripts
+    #volumes:
+    # /host/my-script.sh:/code/hooks/my-script.sh
+    networks:
+     - default
+     - metaphactory_network
+    depends_on:
+     - metaphactory
