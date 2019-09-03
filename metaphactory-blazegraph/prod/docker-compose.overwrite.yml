@@ -14,10 +14,8 @@ services:
     #ports:
     #  - "10214:8080"
     environment:
-      - VIRTUAL_HOST=www.${HOST_NAME}
-        #,data.performing-arts.ch
-      - LETSENCRYPT_HOST=www.${HOST_NAME}
-        #,data.performing-arts.ch
+      - VIRTUAL_HOST=www.${HOST_NAME},data.performing-arts.ch
+      - LETSENCRYPT_HOST=www.${HOST_NAME},data.performing-arts.ch
     #depends_on:
     #  - JAVA_OPTS=-Xmx1g
   cron-backups:
