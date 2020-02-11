@@ -1,0 +1,19 @@
+version: "2.2"
+services:
+  backup-container:
+    container_name: "${COMPOSE_PROJECT_NAME}-backup-container"
+    build:
+      context: backup-container
+    volumes:
+      - /data/:/data/:rw
+    networks:
+      - default
+    environment:
+      - BACKUP_NAME=${COMPOSE_PROJECT_NAME}-backup
+      - BACKUP_BASE_PATH=/data/backup
+      - FOLDERS_TO_BACKUP=/data/${COMPOSE_PROJECT_NAME}/blazegraph-journal
+      - KEEP_BACKUP_DAYS=${KEEP_BACKUP_DAYS}
+      - S3_BUCKET_URL=${S3_BUCKET_URL}
+      - ENDPOINT_URL=${ENDPOINT_URL}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
