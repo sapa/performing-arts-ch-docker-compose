@@ -1,53 +1,22 @@
 version: "2.2"
 services:
   blazegraph:
-    #blazegraph-overwrites here
-    #ports:
-    #  - "10214:8080"
     environment:
-      - JAVA_OPTS=-Xmx1g
+      - JAVA_OPTS=-Xmx4g
     volumes:
       - /data/prod/rdf-data:/datasets:ro
       - /data/prod/blazegraph-journal/:/blazegraph-data:rw
   metaphactory:
-    #metaphactory-overwrite here
-    #ports:
-    #  - "10214:8080"
     environment:
       - VIRTUAL_HOST=www.${HOST_NAME},data.performing-arts.ch
       - LETSENCRYPT_HOST=www.${HOST_NAME},data.performing-arts.ch
-    #depends_on:
-    #  - JAVA_OPTS=-Xmx1g
-  cron-backups:
-    container_name: "${COMPOSE_PROJECT_NAME}-cron-backup"
-    restart: unless-stopped
-    build:
-      context: ../cron-backup
-    environment:
-      - CRON_SCHEDULE=${BACKUP_CRON_SCHEDULE}
-      - BACKUP_NAME=${COMPOSE_PROJECT_NAME}-backup
-      - FOLDERS_TO_BACKUP=/blazegraph-data
-      - NUMBER_OF_BACKUPS_TO_KEEP=${BACKUP_RETENTION_NUMBER}
     volumes:
-      - /backups
-      - /data/prod/blazegraph-database-backups:/backups:rw
-      #only if you want to store backups in addition into a S3 bucket     
-      #- AWS_ACCESS_KEY_ID=accesskey
-      #- AWS_SECRET_ACCESS_KEY=yoursecretaccesskey
-      #- S3_BUCKET_URL=s3://you-backup-bucket/
-      #- AWS_DEFAULT_REGION=eu-west-1
-    volumes_from:
-      - blazegraph
-    depends_on:
-      - blazegraph
-    restart: always
-    networks:
-      - metaphactory_network
+      - /data/dev/researchspace-runtime-data/:/host-runtime-data
+      - /apps
   metaphactory-dev-webhook:
     container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook"
     restart: unless-stopped
-    build:
-      context: ../dev-git-webhook
+    image: staticfloat/docker-webhook:sha256:2f09ca2eecdf7740eeeb2c12895947eab750b31fdf27b7304c9168cb02f87b98
     environment:
      - VIRTUAL_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
      - LETSENCRYPT_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
@@ -57,11 +26,12 @@ services:
      - WEBHOOK_BRANCH_LIST=master
      - WEBHOOK_APP_DIRECTORY=performing-arts-ch
      - WEBHOOK_GIT_REPOSITORY=https://github.com/sapa/performing-arts-ch-templates.git
+    expose:
+     - 8080
     volumes_from:
-       - metaphactory
-    #optionally mount additional hook scripts
-    #volumes:
-    # /host/my-script.sh:/code/hooks/my-script.sh
+     - metaphactory
+    volumes:
+     - ../dev-git-webhook/code/:/code
     networks:
      - default
      - metaphactory_network

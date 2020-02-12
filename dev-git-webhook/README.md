@@ -7,8 +7,7 @@ Additionally, templates and other configuration data will be copied into a app v
 metaphactory-dev-webhook:
     container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook" 
     restart: unless-stopped
-    build:
-      context: ../dev-git-webhook
+    image: staticfloat/docker-webhook
     environment:
      - VIRTUAL_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME} 
      - LETSENCRYPT_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
@@ -18,6 +17,8 @@ metaphactory-dev-webhook:
      - WEBHOOK_BRANCH_LIST=master
      - WEBHOOK_APP_DIRECTORY=my-app
      - WEBHOOK_GIT_REPOSITORY=https://github.com/{user}/{repository}.git
+    expose:
+     - 8080
     volumes_from:
      - metaphactory
     #optionally mount additional hook scripts
