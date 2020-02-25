@@ -57,15 +57,21 @@ _(Note that we are following the tutorial's example name, it might differ from m
     
 7.  From now on the  `nginx-proxy`  will listen to container changes on the docker daemon. As soon as a new docker container instance is started with a environment variable  `-e VIRTUAL_HOST=your-project-name.hostname.tld`, nginx will automatically create a vhost entry to proxy incoming HTPP(S) request on  `your-project-name.hostname.tld`  to the respective container. The environment variable is automatically set when using the metaphactory  `docker-compose.yml`  as described below. It uses the  `COMPOSE_PROJECT_NAME`  from the  `.env`  file as  `vhost`  name and as such the  `vhost`  name is equal to the prefix of metaphactory container;
 
-8. Run (at `docker-compose/nginx-letsencrypt`) `docker-compose up -d`;
-	8a. The container `nginx-proxy-gen` should now have been replaced with `nginx-proxy-letsencrypt`;
+8. Run (at `docker-compose/nginx-letsencrypt`): `docker-compose up -d`;
 	
 9. Do a `docker-compose down` and `docker-compose up -d` of all containers.
+
+Note: if you face a proxy error, try getting first the your-project containers up, then nginx-letsencrypt and then nginx itself.
+
+### About directories and files permissions
+1.	The jetty webserver does **not** run as _root_ and does not change file ownership in volumes, so the file permissions do matter;
+2.	 Do a `cd /` and run `chown -R 100:0 data`. This will allow _jetty_ - within the containers - to have _rw_ privileges;
+3.	To a better understanding, please refer to [https://help.metaphacts.com/resource/Help:Installation#docker-volumes](https://help.metaphacts.com/resource/Help:Installation#docker-volumes).
 
 ### Uploading existing data
 1. Having access to the system, login, go to system administration (via the gear at the top right menu) > Data Import and Export;
 2. Click on Advanced Options and check **Keep source NamedGraphs**. Then upload the file/link that has been provided to you via _Load by HTTP/FTP/File URL_ (it **can be** a zipped version of: e.g.: `backup-2099-01-01.nq`);
-	2a. Notice that you **WILL** receive a timeout in the browser, but if you do a `docker stats` you'll see a spike in CPU usage within the blazegraph container. That means it's probably working;
+	2a. Notice that you **WILL** receive a timeout in the browser, but if you do a `docker stats` you'll see a spike in CPU usage within the blazegraph container. This means it's probably working;
 	2b. You might check if it worked (after seeing the CPU spike normalize) if the repository contains _at least one more_ named graph and going to SPAQRL and running the exact following query:
 
 > 	SELECT (count(*) as ?total) WHERE {   ?s ?p ?o . }

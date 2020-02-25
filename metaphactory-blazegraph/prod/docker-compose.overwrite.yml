@@ -11,7 +11,7 @@ services:
       - VIRTUAL_HOST=www.${HOST_NAME},data.performing-arts.ch
       - LETSENCRYPT_HOST=www.${HOST_NAME},data.performing-arts.ch
     volumes:
-      - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/host-runtime-data
+      - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/runtime-data
       - /apps
   metaphactory-dev-webhook:
     container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook"

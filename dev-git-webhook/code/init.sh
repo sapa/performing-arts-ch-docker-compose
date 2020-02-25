@@ -9,7 +9,8 @@ if [ ! -d "$GIT_DIRECTORY" ]; then
 	cd ./*
 	#cp -R data/* /data/
 	mkdir /apps/${WEBHOOK_APP_DIRECTORY}
-	chown -R 100:101 /apps/${WEBHOOK_APP_DIRECTORY}
+	#100:101	
+	chown -R 100:101 /apps/${WEBHOOK_APP_DIRECTORY}	
 	cp -R ./* /apps/${WEBHOOK_APP_DIRECTORY}
 	#chown -R 100:101 /data
 fi

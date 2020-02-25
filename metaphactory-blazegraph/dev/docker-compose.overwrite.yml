@@ -5,17 +5,16 @@ services:
       - JAVA_OPTS=-Xmx4g
     volumes:
       - /data/${COMPOSE_PROJECT_NAME}/blazegraph-journal/:/blazegraph-data:rw
-      - /data/${COMPOSE_PROJECT_NAME}/rdf-data:/datasets:ro
+      - /data/${COMPOSE_PROJECT_NAME}/rdf-data:/datasets:rw
   metaphactory:
     volumes:
-      - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/host-runtime-data
+      - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/runtime-data:rw
       - /apps
   metaphactory-dev-webhook:
     container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook" 
     restart: unless-stopped
     build:
      context: ../dev-git-webhook
-    #image: staticfloat/docker-webhook@sha256:2f09ca2eecdf7740eeeb2c12895947eab750b31fdf27b7304c9168cb02f87b98
     environment:
      - VIRTUAL_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME} 
      - LETSENCRYPT_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
@@ -25,8 +24,6 @@ services:
      - WEBHOOK_BRANCH_LIST=develop
      - WEBHOOK_APP_DIRECTORY=performing-arts-ch
      - WEBHOOK_GIT_REPOSITORY=https://github.com/sapa/performing-arts-ch-templates.git
-       # expose:
-       # - 8000
     volumes_from:
      - metaphactory
     volumes:
