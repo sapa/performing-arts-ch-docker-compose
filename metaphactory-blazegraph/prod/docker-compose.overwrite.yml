@@ -8,8 +8,8 @@ services:
       - /data/${COMPOSE_PROJECT_NAME}/blazegraph-journal/:/blazegraph-data:rw
   metaphactory:
     environment:
-      - VIRTUAL_HOST=www.${HOST_NAME},data.performing-arts.ch
-      - LETSENCRYPT_HOST=www.${HOST_NAME},data.performing-arts.ch
+      - VIRTUAL_HOST=www.${HOST_NAME},data.${HOST_NAME},${HOST_NAME}
+      - LETSENCRYPT_HOST=www.${HOST_NAME},data.${HOST_NAME},${HOST_NAME}
     volumes:
       - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/runtime-data
       - /apps

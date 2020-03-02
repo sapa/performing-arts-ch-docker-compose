@@ -1,6 +1,5 @@
 version: "2.2"
 services:
-
  metaphactory:
   container_name: "${COMPOSE_PROJECT_NAME}-metaphactory"
   image: "${METAPHACTORY_IMAGE}"
@@ -23,9 +22,6 @@ services:
    options:
     max-size: "200k"
     max-file: "10"
- 
-volumes:
-  metaphactory-runtime-data:
 
 networks:
   default:
