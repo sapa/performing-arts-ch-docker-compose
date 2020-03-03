@@ -46,12 +46,12 @@ _(Note that we are following the tutorial's example name, it might differ from m
 2.  Normally, we would copy the content of  [nginx.tmpl](https://raw.githubusercontent.com/jwilder/nginx-proxy/master/nginx.tmpl)  to  `/home/docker/config/nginx/nginx.tmpl`, but since we require additional forward/redirect, the script was tweaked a bit, so: copy the file at `docker-compose/nginx/nginx.tmpl` to the docker config folder instead
 3.  Go into the  `cert`  folder i.e.  `cd /home/docker/config/nginx/certs`  and generate  [Diffie–Hellman](https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange)  parameters using  `openssl dhparam -dsaparam -out /home/docker/config/nginx/certs/hostname.tld.dhparam.pem 4096`
 	3a. The `-dsaparam`  [option instructs OpenSSL to produce "DSA-like" DH parameters](https://wiki.openssl.org/index.php/Manual:Dhparam(1)#OPTIONS), which is magnitude faster then computing the dhparam 4096 (see explanation  [on stackexchange](https://security.stackexchange.com/a/95184))
-4.	Go into folder  `docker-compose/nginx`
-5.  Now we are ready to create and start the proxy container. Running  `docker-compose up -d`  should result in two more containers created (check with `docker ps`): `nginx-proxy` and `nginx-proxy-gen`
-6.  Verify with that the container `nginx-proxy` is running with two ports exposed:  `80, 443`
-7.  From now on the  `nginx-proxy`  will listen to container changes on the docker daemon. As soon as a new docker container instance is started with a environment variable  `-e VIRTUAL_HOST=your-project-name.hostname.tld`, nginx will automatically create a vhost entry to proxy incoming HTPP(S) request on  `your-project-name.hostname.tld`  to the respective container. The environment variable is automatically set when using the metaphactory  `docker-compose.yml`  as described below. It uses the  `COMPOSE_PROJECT_NAME`  from the  `.env`  file as  `vhost`  name and as such the  `vhost`  name is equal to the prefix of metaphactory container
-8. Run (at `docker-compose/nginx-letsencrypt`): `docker-compose up -d`
-9. Do a `docker-compose down` and `docker-compose up -d` of all containers.
+5.	Go into folder  `docker-compose/nginx`
+6.  Now we are ready to create and start the proxy container. Running  `docker-compose up -d`  should result in two more containers created (check with `docker ps`): `nginx-proxy` and `nginx-proxy-gen`
+7.  Verify with that the container `nginx-proxy` is running with two ports exposed:  `80, 443`
+8.  From now on the  `nginx-proxy`  will listen to container changes on the docker daemon. As soon as a new docker container instance is started with a environment variable  `-e VIRTUAL_HOST=your-project-name.hostname.tld`, nginx will automatically create a vhost entry to proxy incoming HTPP(S) request on  `your-project-name.hostname.tld`  to the respective container. The environment variable is automatically set when using the metaphactory  `docker-compose.yml`  as described below. It uses the  `COMPOSE_PROJECT_NAME`  from the  `.env`  file as  `vhost`  name and as such the  `vhost`  name is equal to the prefix of metaphactory container
+9. Run (at `docker-compose/nginx-letsencrypt`): `docker-compose up -d`
+10. Do a `docker-compose down` and `docker-compose up -d` of all containers.
 
 Note: if you face a proxy error, try getting first the your-project containers up, then nginx-letsencrypt and then nginx itself.
 
@@ -91,7 +91,7 @@ There are already some default configuration: you may only want to change `AWS_A
 
 ### Setup the cronjob
  1. Open the crontab file with `crontab -e`
-	 1a. Please not that this should be done with a user that has access to the docker socket. Typically you want to use `root` for that.
+	1a. Please not that this should be done with a user that has access to the docker socket. Typically you want to use `root` for that.
  2. Add the `callToBackup.sh` script, e.g.:
 	```bash
 	0 4 * * * /path/to/repository/backup/callToBackup.sh
