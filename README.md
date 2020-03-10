@@ -31,8 +31,8 @@ _(Note that we are following the tutorial's example name, it might differ from m
 ### Setup Metaphactory with blazegraph triplestore included
 
 1.  Clone both GIT repositories: `https://github.com/sapa/performing-arts-ch-docker-compose.git` and `https://github.com/sapa/performing-arts-ch-templates.git` to the same directory
-2.  Go into the  `metaphactory-docker-compose/metaphactory-blazegraph` folder
-3.  The main idea idea is to maintain one subfolder for every deployment (dev, prod, other...)
+2.  Go into the `performing-arts-ch-docker-compose/metaphactory-blazegraph` folder
+3.  The main idea is to maintain one subfolder for every deployment (dev, prod, other...)
 4.  Go into the corresponding environment folder (`dev` folder, for example) and open the file  `.env`  e.g.  `vi .env`;
 5.  If you want to, you might change the value of the `COMPOSE_PROJECT_NAME` variable to a unique name (default is  `dev`). The name will be used to prefix container names as well as  `vhost`  entry in the nginx proxy
 6.  Run  `docker-compose up -d`. It is  **important to run the command at your-deployment directory (where the .env file is located)**, since docker-compose will pick up the  `.env`  file for parametrization
@@ -76,7 +76,7 @@ Here are the settings for the Github itself:
 
 1.	At the [performing-arts-ch-templates](https://github.com/sapa/performing-arts-ch-templates) and [performing-arts-ch-users](https://github.com/sapa/performing-arts-ch-users) repository, go to _Settings > Webhook > Add webhook_
 2.	At the _Payload URL_ put in `https://webhook-dev.hostname.tld/`; make sure the content-type is **application/json**; _pick a secret_, _Enable SSL certification_, _Just the push event_, _Check "Active"_
-3.	 Go into `/data/secrets/`, create a file named webhook_secrets.env and set these variables:
+3.	Go into `/data/secrets/`, create a file named webhook_secrets.env and set these variables:
 ```bash
 WEBHOOK_GIT_REPOSITORY=https://user:pass@github.com/sapa/performing-arts-ch-templates.git
 WEBHOOK_SHIRO_GIT_REPOSITORY=https://user:pass@github.com/sapa/performing-arts-ch-users.git
@@ -85,9 +85,9 @@ WEBHOOK_SHIRO_SECRET=secret
 ```
 This file will be referenced at docker-compose.yml files (*env_file:*)
 
-5.	 Both variables should match the secrets you picked at the corresponding Github repository
-6.	The webhook container will be created based on the `Dockerfile` at `../docker-compose/dev-git-webhook` at the time of creation
-7.	Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail (they should already be in this particular instance).
+4.	Both variables should match the secrets you picked at the corresponding Github repository
+5.	The webhook container will be created based on the `Dockerfile` at `../docker-compose/dev-git-webhook` at the time of creation
+6.	Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail (they should already be in this particular instance).
 
 ## Setting up the backup
 The backup process will be triggered by a script on the host machine. Typically you want to automate this with a cronjob.
@@ -96,9 +96,9 @@ The backup process will be triggered by a script on the host machine. Typically 
 1.	Inside the `../docker-compose/backup/docker-compose.yml` there is a reference to a file at `/data/secrets/aws_secrets.env`. Create this file and add both `AWS_ACCESS_KEY_ID=yourId` and `AWS_SECRET_ACCESS_KEY=yourKey`. (each variable in its own line)
 
 ### Setup the cronjob
- 1. Open the crontab file with `crontab -e`
+1. Open the crontab file with `crontab -e`
 	1a. Please not that this should be done with a user that has access to the docker socket. Typically you want to use _root_ for that.
- 3. Add the `callToBackup.sh` script, e.g.:
+2. Add the `callToBackup.sh` script, e.g.:
 	```bash
 	0 4 * * * /path/to/repository/backup/callToBackup.sh
 	```

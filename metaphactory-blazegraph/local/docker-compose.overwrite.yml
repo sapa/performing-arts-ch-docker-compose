@@ -13,4 +13,6 @@ services:
     #environment:
     #  - JAVA_OPTS=-Xmx1g
     volumes:
-      - ../../performing-arts-ch-templates:/performing-arts-ch-runtime
+      - ../../performing-arts-ch-templates:/runtime-data:rw
+      - ../../performing-arts-ch-users:/shiro-config:rw
+      - /apps
