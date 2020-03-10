@@ -29,5 +29,5 @@ if [ -n "${KEEP_BACKUP_DAYS}" ]; then
         find "${BACKUP_RUNTIME_BASE_PATH}" -mtime "+${KEEP_BACKUP_DAYS}" -type f -delete;
 
 else
-	echo "NUMBER_OF_BACKUPS_TO_KEEP was not set. Not removing any old backups."
+	echo "KEEP_BACKUP_DAYS was not set. Not removing any old backups."
 fi

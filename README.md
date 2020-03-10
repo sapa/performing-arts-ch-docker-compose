@@ -20,13 +20,13 @@ Assuming _root_ credentials:
 4. Use `mount /dev/vdc1 /data` to mount the filesystem
 5. Edit the `/etc/fstab` file to mount it on boot
 _(Note that we are following the tutorial's example name, it might differ from machine to machine)_
-7.	Example of `fstab` appended line after edit:
+6.	Example of `fstab` appended line after edit:
 
 >  /dev/vdc1 /data auto defaults 0 0
 
-8.	Create the `/data/backup` directory (we're going to be using it for storing local backups)
+7.	Create the `/data/backup` directory (we're going to be using it for storing local backups) and `/data/secrets` (will be used to store webhook and S3 secrets)
  
-**Note:** if you have an issue with `X11` to use `docker login`, run `sudo apt install gnupg2 pass`.
+**Note:** if you have an issue with `X11` to use `docker login`, run `apt install gnupg2 pass`.
 
 ### Setup Metaphactory with blazegraph triplestore included
 
@@ -74,26 +74,46 @@ You shall then see far more entries.
 ### Setting up a webhook at Github
 Here are the settings for the Github itself:
 
-1.	At the [performing-arts-ch-templates](https://github.com/sapa/performing-arts-ch-templates) repository, go to _Settings > Webhook > Add webhook_
+1.	At the [performing-arts-ch-templates](https://github.com/sapa/performing-arts-ch-templates) and [performing-arts-ch-users](https://github.com/sapa/performing-arts-ch-users) repository, go to _Settings > Webhook > Add webhook_
 2.	At the _Payload URL_ put in `https://webhook-dev.hostname.tld/`; make sure the content-type is **application/json**; _pick a secret_, _Enable SSL certification_, _Just the push event_, _Check "Active"_
-3.	 Now, go into the `docker-compose/metaphactory-blazegraph/your-project-container-environment-folder` (i.e: `/dev`) and, at the `.env` file, add a `WEBHOOK_SECRET` variable that will be used to sync between the repository and the project
-4.	 Your `WEBHOOK_SECRET` variable should now match the secret you picked at Github
-5.	The webhook container will be created based on the `Dockerfile` at `docker-compose/dev-git-webhook` at the time of creation
-6.	Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail (they should already be in this particular instance).
+3.	 Go into `/data/secrets/`, create a file named webhook_secrets.env and set these variables:
+```bash
+WEBHOOK_GIT_REPOSITORY=https://user:pass@github.com/sapa/performing-arts-ch-templates.git
+WEBHOOK_SHIRO_GIT_REPOSITORY=https://user:pass@github.com/sapa/performing-arts-ch-users.git
+WEBHOOK_SECRET=secret
+WEBHOOK_SHIRO_SECRET=secret
+```
+This file will be referenced at docker-compose.yml files (*env_file:*)
+
+5.	 Both variables should match the secrets you picked at the corresponding Github repository
+6.	The webhook container will be created based on the `Dockerfile` at `../docker-compose/dev-git-webhook` at the time of creation
+7.	Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail (they should already be in this particular instance).
 
 ## Setting up the backup
 The backup process will be triggered by a script on the host machine. Typically you want to automate this with a cronjob.
 
 ### Setup environment variables
-Inside the `metaphactory-blazegraph/dev` or `metaphactory-blazegraph/prod` folder, there is a `.env` file with the corresponding environment variables.
-The _backup-container_ uses the variables configured in the `#### BACKUP CONFIGURATION ####` section.
-There are already some default configuration: you may only want to change `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+1.	Inside the `../docker-compose/backup/docker-compose.yml` there is a reference to a file at `/data/secrets/aws_secrets.env`. Create this file and add both `AWS_ACCESS_KEY_ID=yourId` and `AWS_SECRET_ACCESS_KEY=yourKey`. (each variable in its own line)
 
 ### Setup the cronjob
  1. Open the crontab file with `crontab -e`
-	1a. Please not that this should be done with a user that has access to the docker socket. Typically you want to use `root` for that.
- 2. Add the `callToBackup.sh` script, e.g.:
+	1a. Please not that this should be done with a user that has access to the docker socket. Typically you want to use _root_ for that.
+ 3. Add the `callToBackup.sh` script, e.g.:
 	```bash
 	0 4 * * * /path/to/repository/backup/callToBackup.sh
 	```
 3. Save it and exit.
+
+## General troubleshooting
+
+Sometimes you may change a configuration and it appears that nothing changed. For big changes, you can run the following commands to ensure that everything is build up from the scratch, deleting existing images and containers and recreating them:
+1.	`docker-compose down` to all affected containers
+2.	`docker rmi $(docker images -a -q)` will delete all unused images
+3.	`docker-compose up -d --build` to all containers again
+
+----
+
+4. Watch out for permissions. Sometimes you may forget to use a chown/chmod
+5. If the webhook keeps returning 403, see if you're using the right branch (configured at the .env file)
+6. To see what's happening inside a container use `docker logs -f name-of-container`
+7. Some images don't have bash in it, so if you want to execute and go inside the container use `docker exec -it container-name sh` or, if you need to get inside as root: `docker exec -u root -it container-name sh`
