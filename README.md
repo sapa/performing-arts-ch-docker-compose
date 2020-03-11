@@ -30,7 +30,6 @@ _(Note that we are following the tutorial's example name, it might differ from m
 
 ### Setup Metaphactory with blazegraph triplestore included
 
-<<<<<<< HEAD
 1.  Clone GIT repositories: `https://github.com/sapa/performing-arts-ch-docker-compose.git`, `https://github.com/sapa/performing-arts-ch-templates.git` and `https://github.com/sapa/performing-arts-ch-users.git` to the same parent directory
 2.  Go into the  `metaphactory-docker-compose/metaphactory-blazegraph` folder
 3.  The main idea idea is to maintain one subfolder for every deployment (dev, prod, other...)
@@ -39,7 +38,6 @@ _(Note that we are following the tutorial's example name, it might differ from m
 6.  Run  `docker-compose up -d`. It is  **important to run the command at your-deployment directory (where the .env file is located)**, since docker-compose will pick up the  `.env`  file for parametrization
 7.  Use `docker network create nginx_proxy_network` to create this network manually
 8.	 Keep in mind that the _METAPHACTORY_OPTS_ differ from deployment to deployment. Here we have already configured _dev_, _prod_ and _local_.
-
 
 ### Setup nginx and letsencrypt
 
@@ -72,7 +70,6 @@ _Note: if you face a proxy error, try getting first the your-project containers 
 > 	SELECT (count(*) as ?total) WHERE {   ?s ?p ?o . }
 	
 You shall then see far more entries.
-
 
 ### Setup a webhook at Github
 
