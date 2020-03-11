@@ -30,6 +30,7 @@ _(Note that we are following the tutorial's example name, it might differ from m
 
 ### Setup Metaphactory with blazegraph triplestore included
 
+<<<<<<< HEAD
 1.  Clone GIT repositories: `https://github.com/sapa/performing-arts-ch-docker-compose.git`, `https://github.com/sapa/performing-arts-ch-templates.git` and `https://github.com/sapa/performing-arts-ch-users.git` to the same parent directory
 2.  Go into the  `metaphactory-docker-compose/metaphactory-blazegraph` folder
 3.  The main idea idea is to maintain one subfolder for every deployment (dev, prod, other...)
@@ -77,7 +78,7 @@ You shall then see far more entries.
 
 1.	At the [performing-arts-ch-templates](https://github.com/sapa/performing-arts-ch-templates) and [performing-arts-ch-users](https://github.com/sapa/performing-arts-ch-users) repository, go to _Settings > Webhook > Add webhook_
 2.	At the _Payload URL_ put in `https://webhook-dev.hostname.tld/`; make sure the content-type is **application/json**; _pick a secret_, _Enable SSL certification_, _Just the push event_, _Check "Active"_
-3.	 Go into `/data/secrets/`, create a file named webhook_secrets.env and set these variables:
+3.	Go into `/data/secrets/`, create a file named webhook_secrets.env and set these variables:
 ```bash
 WEBHOOK_GIT_REPOSITORY=https://user:pass@github.com/project/repo.git
 WEBHOOK_SHIRO_GIT_REPOSITORY=https://user:pass@github.com/project/shiro_repo.git
@@ -86,9 +87,9 @@ WEBHOOK_SHIRO_SECRET=secret
 ```
 This file will be referenced at *docker-compose.yml* files (*env_file:*)
 
-5.	 Both variables should match the secrets you picked at the corresponding Github repository
-6.	The webhook container will be created based on the `Dockerfile` at `../docker-compose/dev-git-webhook` at the time of creation
-7.	Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail (they should already be in this particular instance).
+4.	Both variables should match the secrets you picked at the corresponding Github repository
+5.	The webhook container will be created based on the `Dockerfile` at `../docker-compose/dev-git-webhook` at the time of creation
+6.	Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail (they should already be in this particular instance).
 
 ### Setup the backup
 
@@ -109,7 +110,6 @@ These are used to upload the backup.
  1. Open the crontab file with `crontab -e`
 	1a. Please not that this should be done with a user that has access to the docker socket. Typically you want to use _root_ for that.
  2. Add the `callToBackup.sh` script, e.g.:
- 
 	```bash
 	0 4 * * * /path/to/repository/backup/callToBackup.sh
 	```
