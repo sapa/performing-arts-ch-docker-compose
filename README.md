@@ -78,8 +78,8 @@ Here are the settings for the Github itself:
 2.	At the _Payload URL_ put in `https://webhook-dev.hostname.tld/`; make sure the content-type is **application/json**; _pick a secret_, _Enable SSL certification_, _Just the push event_, _Check "Active"_
 3.	Go into `/data/secrets/`, create a file named webhook_secrets.env and set these variables:
 ```bash
-WEBHOOK_GIT_REPOSITORY=https://user:pass@github.com/sapa/performing-arts-ch-templates.git
-WEBHOOK_SHIRO_GIT_REPOSITORY=https://user:pass@github.com/sapa/performing-arts-ch-users.git
+WEBHOOK_GIT_REPOSITORY=https://user:pass@github.com/project/repo.git
+WEBHOOK_SHIRO_GIT_REPOSITORY=https://user:pass@github.com/project/shiro_repo.git
 WEBHOOK_SECRET=secret
 WEBHOOK_SHIRO_SECRET=secret
 ```
