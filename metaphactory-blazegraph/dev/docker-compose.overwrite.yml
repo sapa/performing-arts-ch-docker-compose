@@ -10,7 +10,7 @@ services:
     volumes:
       - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/runtime-data:rw
       - /data/${COMPOSE_PROJECT_NAME}/users/:/shiro-config:rw
-      - /apps
+      - /apps/:/apps:rw
   metaphactory-dev-webhook:
     container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook" 
     restart: unless-stopped
@@ -27,6 +27,7 @@ services:
      - WEBHOOK_USERS_BRANCH_LIST=master
      - WEBHOOK_APP_DIRECTORY=performing-arts-ch
      - WEBHOOK_SHIRO_DIRECTORY=shiro-config
+     - USERS_REPO_NAME=performing-arts-ch-users
     volumes_from:
      - metaphactory
     volumes:

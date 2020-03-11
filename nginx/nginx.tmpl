@@ -257,10 +257,15 @@ server {
         {{ if $enable_ipv6 }}
         listen [::]:443 ssl http2 {{ $default_server }};
         {{ end }}
-        # Added hardcoded hosts
+        # Added hardcoded redirection for data.*
         {{ if eq $host "data.performing-arts.ch" }}
         return 301 https://www.performing-arts.ch$request_uri;
         {{ end }}
+         # Added hardcoded redirection for non www
+        {{ if eq $host "performing-arts.ch" }}
+        return 301 https://www.performing-arts.ch$request_uri;
+        {{ end }}
+
         access_log /var/log/nginx/access.log vhost;
 
         {{ if eq $network_tag "internal" }}

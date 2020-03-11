@@ -1,6 +1,5 @@
 #!/bin/sh
 GIT_DIRECTORY="/git"
-USERS_REPO_NAME="performing-arts-ch-users"
 
 if [ ! -d "$GIT_DIRECTORY" ]; then
         echo "Initial GIT checkout. [init.sh]"

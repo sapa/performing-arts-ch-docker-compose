@@ -1,6 +1,5 @@
 #!/bin/sh
 GIT_DIRECTORY="/git"
-USERS_REPO_NAME="performing-arts-ch-users"
 
 if [ -d "$GIT_DIRECTORY" ]; then
 	echo "Webhook call [pull-and-copy.sh]"
