@@ -90,7 +90,7 @@ This file will be referenced at *docker-compose.yml* files. (*env_file:*)
 5. The webhook container will be created based on the `Dockerfile` at `../docker-compose/dev-git-webhook` at the time of creation
 6. Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail. (they should already be in this particular instance)
 
-#### Setup the backup
+### Setup the backup
 
 The backup process will be triggered by a script on the host machine. Typically you want to automate this with a cronjob.
 
@@ -106,7 +106,7 @@ AWS_SECRET_ACCESS_KEY=yourKey
 
 These are used to upload the backup.
 
-### Setup the cronjob
+#### Setup the cronjob
 
  1. Open the crontab file with `crontab -e`
 	1a. Please not that this should be done with a user that has access to the docker socket. Typically you want to use _root_ for that.
