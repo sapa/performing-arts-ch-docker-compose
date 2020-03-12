@@ -27,6 +27,7 @@ services:
      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
      - WEBHOOK_HOOKS_DIR=/code/hooks
      - WEBHOOK_BRANCH_LIST=master
+     - WEBHOOK_USERS_BRANCH_LIST=master
      - WEBHOOK_APP_DIRECTORY=performing-arts-ch
      - WEBHOOK_SHIRO_DIRECTORY=shiro-config
      - WEBHOOK_GIT_REPOSITORY=https://github.com/sapa/performing-arts-ch-templates.git
