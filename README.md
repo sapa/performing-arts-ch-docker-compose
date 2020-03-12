@@ -90,7 +90,7 @@ This file will be referenced at *docker-compose.yml* files. (*env_file:*)
 5. The webhook container will be created based on the `Dockerfile` at `../docker-compose/dev-git-webhook` at the time of creation
 6. Notice that all scripts must be with `chmod +x script.sh` otherwise the container will fail. (they should already be in this particular instance)
 
-### Setup the backup
+#### Setup the backup
 
 The backup process will be triggered by a script on the host machine. Typically you want to automate this with a cronjob.
 
