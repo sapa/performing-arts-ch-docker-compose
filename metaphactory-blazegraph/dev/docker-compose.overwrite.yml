@@ -23,8 +23,9 @@ services:
      - LETSENCRYPT_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
      - WEBHOOK_HOOKS_DIR=/code/hooks
-     - WEBHOOK_BRANCH_LIST=develop
-     - WEBHOOK_USERS_BRANCH_LIST=master
+     - WEBHOOK_BRANCH_LIST=master,develop
+     - WEBHOOK_WHITELISTED_BRANCH=develop
+     - WEBHOOK_USERS_BRANCH=master
      - WEBHOOK_APP_DIRECTORY=performing-arts-ch
      - WEBHOOK_SHIRO_DIRECTORY=shiro-config
      - USERS_REPO_NAME=performing-arts-ch-users

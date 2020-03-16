@@ -11,12 +11,13 @@ if [ -d "$GIT_DIRECTORY" ]; then
 	cp -R ./* /${WEBHOOK_SHIRO_DIRECTORY}
 else
         echo "Initial GIT checkout. [pull-and-copy.sh]"
-	mkdir ${GIT_DIRECTORY}
+
+        mkdir ${GIT_DIRECTORY}
         cd ${GIT_DIRECTORY}
 
         # == TEMPLATES ==
-        echo "- Cloning: git clone -b ${WEBHOOK_BRANCH_LIST} ${WEBHOOK_GIT_REPOSITORY}"
-        git clone -b ${WEBHOOK_BRANCH_LIST} ${WEBHOOK_GIT_REPOSITORY}
+        echo "- Cloning: git clone -b ${WEBHOOK_WHITELISTED_BRANCH} ${WEBHOOK_GIT_REPOSITORY}"
+        git clone -b ${WEBHOOK_WHITELISTED_BRANCH} ${WEBHOOK_GIT_REPOSITORY}
 
         cd ./*
 
@@ -30,8 +31,9 @@ else
         mkdir ${GIT_DIRECTORY}
         cd ${GIT_DIRECTORY}
 
-        echo "- Cloning: git clone -b ${WEBHOOK_BRANCH_LIST} ${WEBHOOK_SHIRO_GIT_REPOSITORY}"
-        git clone -b ${WEBHOOK_USERS_BRANCH_LIST} ${WEBHOOK_SHIRO_GIT_REPOSITORY}
+
+        echo "- Cloning: git clone -b ${WEBHOOK_USERS_BRANCH} ${WEBHOOK_SHIRO_GIT_REPOSITORY}"
+        git clone -b ${WEBHOOK_USERS_BRANCH} ${WEBHOOK_SHIRO_GIT_REPOSITORY}
 
         cd ./${USERS_REPO_NAME}
 
