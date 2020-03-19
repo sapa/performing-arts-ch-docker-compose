@@ -1,6 +1,5 @@
 #!/bin/sh
 GIT_DIRECTORY="/git"
-USERS_REPO_NAME="performing-arts-ch-users"
 
 if [ ! -d "$GIT_DIRECTORY" ]; then
         echo "Initial GIT checkout. [init.sh]"
@@ -9,8 +8,8 @@ if [ ! -d "$GIT_DIRECTORY" ]; then
         cd ${GIT_DIRECTORY}
 		
 	# == TEMPLATES ==
-        echo "- Cloning: git clone -b ${WEBHOOK_BRANCH_LIST} ${WEBHOOK_GIT_REPOSITORY}"
-        git clone -b ${WEBHOOK_BRANCH_LIST} ${WEBHOOK_GIT_REPOSITORY}
+        echo "- Cloning: git clone -b ${WEBHOOK_WHITELISTED_BRANCH} ${WEBHOOK_GIT_REPOSITORY}"
+        git clone -b ${WEBHOOK_WHITELISTED_BRANCH} ${WEBHOOK_GIT_REPOSITORY}
 
         cd ./*
 
@@ -25,8 +24,8 @@ if [ ! -d "$GIT_DIRECTORY" ]; then
 	cd ${GIT_DIRECTORY}
 
 
-	echo "- Cloning: git clone -b ${WEBHOOK_BRANCH_LIST} ${WEBHOOK_SHIRO_GIT_REPOSITORY}"
-        git clone -b ${WEBHOOK_USERS_BRANCH_LIST} ${WEBHOOK_SHIRO_GIT_REPOSITORY}
+	echo "- Cloning: git clone -b ${WEBHOOK_USERS_BRANCH} ${WEBHOOK_SHIRO_GIT_REPOSITORY}"
+        git clone -b ${WEBHOOK_USERS_BRANCH} ${WEBHOOK_SHIRO_GIT_REPOSITORY}
 	
 	cd ./${USERS_REPO_NAME}
 

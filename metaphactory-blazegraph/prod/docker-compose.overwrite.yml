@@ -13,24 +13,27 @@ services:
     volumes:
       - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/runtime-data:rw
       - /data/${COMPOSE_PROJECT_NAME}/users/:/shiro-config:rw
-      - /apps
+      - /apps/:/apps:rw
   metaphactory-dev-webhook:
     container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook"
     restart: unless-stopped
     build:
      context: ../dev-git-webhook
-    # image: staticfloat/docker-webhook@sha256:2f09ca2eecdf7740eeeb2c12895947eab750b31fdf27b7304c9168cb02f87b98
+    env_file:
+     - /data/secrets/webhook_secret.env
     environment:
      - VIRTUAL_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
      - LETSENCRYPT_HOST=webhook-${COMPOSE_PROJECT_NAME}.${HOST_NAME}
      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
-     #- WEBHOOK_SECRET=${WEBHOOK_SECRET}
      - WEBHOOK_HOOKS_DIR=/code/hooks
-     - WEBHOOK_BRANCH_LIST=master
+     - WEBHOOK_BRANCH_LIST=master,develop
+     - WEBHOOK_WHITELISTED_BRANCH=develop
+     - WEBHOOK_USERS_BRANCH=master
      - WEBHOOK_APP_DIRECTORY=performing-arts-ch
      - WEBHOOK_SHIRO_DIRECTORY=shiro-config
      - WEBHOOK_GIT_REPOSITORY=https://github.com/sapa/performing-arts-ch-templates.git
      - WEBHOOK_SHIRO_GIT_REPOSITORY=https://github.com/sapa/performing-arts-ch-users.git
+     - USERS_REPO_NAME=performing-arts-ch-users
     volumes_from:
      - metaphactory
     volumes:

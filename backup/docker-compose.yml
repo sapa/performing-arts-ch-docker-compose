@@ -15,9 +15,8 @@ services:
       - BACKUP_BASE_PATH=/data/backup
       - BACKUP_RUNTIME_NAME=${COMPOSE_PROJECT_NAME}-runtime-backup
       - FOLDERS_TO_BACKUP=/data/${COMPOSE_PROJECT_NAME}/blazegraph-journal
-      - FOLDERS_TO_BACKUP_RUNTIME=/data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data
+     #- FOLDERS_TO_BACKUP_RUNTIME=/data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data
+      - FOLDERS_TO_BACKUP_RUNTIME=/apps/performing-arts-ch/researchspace-runtime-data
       - KEEP_BACKUP_DAYS=${KEEP_BACKUP_DAYS}
       - S3_BUCKET_URL=${S3_BUCKET_URL}
       - ENDPOINT_URL=${ENDPOINT_URL}
-     # - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-     # - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
