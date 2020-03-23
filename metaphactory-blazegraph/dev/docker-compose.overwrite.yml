@@ -8,9 +8,11 @@ services:
       - /data/${COMPOSE_PROJECT_NAME}/rdf-data:/datasets:rw
   metaphactory:
     volumes:
-      - /data/${COMPOSE_PROJECT_NAME}/researchspace-runtime-data/:/runtime-data:rw
+      - /data/${COMPOSE_PROJECT_NAME}/runtime-data:/runtime-data:rw
       - /data/${COMPOSE_PROJECT_NAME}/users/:/shiro-config:rw
-      - /apps/:/apps:rw
+#      - /data/${COMPOSE_PROJECT_NAME}/apps/${APP_NAME}/:/apps/{$APP_NAME}:rw
+      - /data/${COMPOSE_PROJECT_NAME}/apps/:/apps:rw
+#      - /apps/${WEBHOOK_APP_DIRECTORY}/:/runtime-data:rw
   metaphactory-dev-webhook:
     container_name: "${COMPOSE_PROJECT_NAME}-metaphactory-dev-git-webhook" 
     restart: unless-stopped
@@ -26,7 +28,7 @@ services:
      - WEBHOOK_BRANCH_LIST=master,develop
      - WEBHOOK_WHITELISTED_BRANCH=develop
      - WEBHOOK_USERS_BRANCH=master
-     - WEBHOOK_APP_DIRECTORY=performing-arts-ch
+     - WEBHOOK_APP_DIRECTORY=${APP_NAME}
      - WEBHOOK_SHIRO_DIRECTORY=shiro-config
      - USERS_REPO_NAME=performing-arts-ch-users
     volumes_from:

@@ -3,12 +3,20 @@ GIT_DIRECTORY="/git"
 
 if [ -d "$GIT_DIRECTORY" ]; then
 	echo "Webhook call [pull-and-copy.sh]"
+	
 	cd ${GIT_DIRECTORY}/*
 
 	git pull origin
+	ls -l
+	#git pull https://github.com/sapa/performing-arts-ch-templates.git
 
-	cp -R ./* /apps/${WEBHOOK_APP_DIRECTORY}
-	cp -R ./* /${WEBHOOK_SHIRO_DIRECTORY}
+#	cp -R ./* /runtime-data
+
+	#cp -R ./apps/performing-arts-ch/config /runtime-data
+	#cp -R ./apps/performing-arts-ch/data /runtime-data
+
+	#git pull https://github.com/sapa/performing-arts-ch-users.git
+	#cp -R ./* /${WEBHOOK_SHIRO_DIRECTORY}
 else
         echo "Initial GIT checkout. [pull-and-copy.sh]"
 
