@@ -113,9 +113,10 @@ These are used to upload the backup.
  2. Add the `callToBackup.sh` script, e.g.:
  
 	```bash
-	0 4 * * * /path/to/repository/backup/callToBackup.sh
+	0 4 */5 * 1-5 /docker-compose/backup/callToBackup.sh >> /docker-compose/backup/cron_backups.log 2>&1
 	```
-3. Save it and exit.
+3. _This will also create a log file within the backup container directory. It is enterily optional_
+4. Save it and exit.
 
 ## General troubleshooting
 
