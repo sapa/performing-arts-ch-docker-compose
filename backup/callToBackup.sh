@@ -1,5 +1,6 @@
 #!/bin/bash
 # This file shall be executed by a cronjon to trigger the backup process
+PATH_TO_SCRIPT=/home/ubuntu/performing-arts-ch-docker-compose/backup/
 
 ### ADD THE NAME OF ANY ENVIRONMENT TO BE BACKED UP TO THIS ARRAY
 declare -a environments=(
@@ -16,6 +17,8 @@ function backup {
 
     echo "-> Navigating into working directory"
     currentDir="$(pwd)"
+    cd ${PATH_TO_SCRIPT} || return
+
     cd ../metaphactory-blazegraph/"${environment}"/ || return
 
     echo "-> Shutting down metaphacts-platform containers"

@@ -1,5 +1,6 @@
 #!/bin/sh
 GIT_DIRECTORY="/git"
+APP_PATH="/apps/${APP_NAME}"
 
 if [ ! -d "$GIT_DIRECTORY" ]; then
         echo "Initial GIT checkout. [init.sh]"
@@ -14,10 +15,11 @@ if [ ! -d "$GIT_DIRECTORY" ]; then
         cd ./*
 
         mkdir /apps/${WEBHOOK_APP_DIRECTORY}
-
-        chown -R 100:0 /apps/${WEBHOOK_APP_DIRECTORY}
+	
         cp -R ./* /apps/${WEBHOOK_APP_DIRECTORY}
-		
+
+	chown -R 100:0 /apps/${WEBHOOK_APP_DIRECTORY}
+	
 	#  == SHIRO/USERS ==
 	rm -R ${GIT_DIRECTORY}
 	mkdir ${GIT_DIRECTORY}
