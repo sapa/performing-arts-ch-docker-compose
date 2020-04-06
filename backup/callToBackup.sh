@@ -4,7 +4,7 @@
 ### ADD THE NAME OF ANY ENVIRONMENT TO BE BACKED UP TO THIS ARRAY
 declare -a environments=(
     "dev"
-#    "prod"
+    "prod"
 )
 
 #### START CODE, DO NOT EDIT ####
