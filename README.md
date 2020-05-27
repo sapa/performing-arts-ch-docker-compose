@@ -25,6 +25,7 @@ _(Note that we are following the tutorial's example name, it might differ from m
 >  /dev/vdc1 /data auto defaults 0 0
 
 7. Create the `/data/backup` directory (used to store backups); `/data/secrets` (used to store Webhooks and Storage secrets)
+7.1 You'll have to create the files `aws_secrets.env` and `webhook_secrets.env` beforehand, otherwise you'll get an error when getting the containers up. Please refer to the "Setup backup" and "Setup webhook" sections.
  
 **Note:** if you have any issue with `X11`, run `apt install gnupg2 pass`.
 
