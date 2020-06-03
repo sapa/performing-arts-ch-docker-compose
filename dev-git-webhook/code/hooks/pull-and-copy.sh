@@ -45,8 +45,13 @@ else
 
         cd ./${USERS_REPO_NAME}
 
-       # mkdir ${WEBHOOK_SHIRO_DIRECTORY}
+        cp -R ./* apps/${WEBHOOK_APP_DIRECTORY}/${WEBHOOK_SHIRO_DIRECTORY}
+        chown -R 100:0 apps/${WEBHOOK_APP_DIRECTORY}/${WEBHOOK_SHIRO_DIRECTORY}
 
-        chown -R 100:0 /${WEBHOOK_SHIRO_DIRECTORY}
-        cp -R ./* /${WEBHOOK_SHIRO_DIRECTORY}
+
+        # Remove the assets folder so the database doesnt need to be deleted after a change
+        # The runtime-data must be the same folder configured as the runtime-data at the env file
+        cd /
+        rm -R runtime-data/data/repositories/assets
+
 fi
