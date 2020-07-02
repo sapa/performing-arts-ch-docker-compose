@@ -246,8 +246,8 @@ server {
         listen [::]:80 {{ $default_server }};
         {{ end }}
         access_log /var/log/nginx/access.log vhost;
-        # Forcing redirect to always go through www.*
-        return 301 https://www.$host$request_uri;
+        # Forcing redirect to always go through https
+        return 301 https://$host$request_uri;
 }
 {{ end }}
 
@@ -263,6 +263,10 @@ server {
         {{ end }}
          # Added hardcoded redirection for non www
         {{ if eq $host "performing-arts.ch" }}
+        return 301 https://www.performing-arts.ch$request_uri;
+        {{ end }}
+         # Added hardcoded redirection for www.data
+        {{ if eq $host "www.data.performing-arts.ch" }}
         return 301 https://www.performing-arts.ch$request_uri;
         {{ end }}
 

@@ -4,8 +4,8 @@ PATH_TO_SCRIPT=/home/ubuntu/performing-arts-ch-docker-compose/backup/
 
 ### ADD THE NAME OF ANY ENVIRONMENT TO BE BACKED UP TO THIS ARRAY
 declare -a environments=(
-    "dev"
-   # "prod"
+   # "dev"
+    "prod"
 )
 
 #### START CODE, DO NOT EDIT ####
