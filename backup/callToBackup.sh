@@ -22,7 +22,7 @@ function backup {
 
     echo "-> starting online backup of Blazegraph"
     blazegraph_container_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${environment}-blazegraph)
-    curl --data-urlencode "file=/blazegraph-data/blazegraph.jnl.backup" --data-urlencode "compress=true" http://${blazegraph_container_ip}:8080/blazegraph/backup
+    curl --data-urlencode "file=/blazegraph-data/blazegraph.jnl.backup.gz" --data-urlencode "compress=true" http://${blazegraph_container_ip}:8080/blazegraph/backup
 
     echo "-> Navigating into working directory"
     currentDir="$(pwd)"
