@@ -2,6 +2,7 @@ version: "2.2"
 services:
   backup-container:
     container_name: "${COMPOSE_PROJECT_NAME}-backup-container"
+    image: "${COMPOSE_PROJECT_NAME}-backup-container"
     build:
       context: backup-container
     volumes:
@@ -14,9 +15,8 @@ services:
       - BACKUP_NAME=${COMPOSE_PROJECT_NAME}-backup
       - BACKUP_BASE_PATH=/data/backup
       - BACKUP_RUNTIME_NAME=${COMPOSE_PROJECT_NAME}-runtime-backup
-      - FOLDERS_TO_BACKUP=/data/${COMPOSE_PROJECT_NAME}/blazegraph-journal
+      - BLAZEGRAPH_BACKUP=/data/${COMPOSE_PROJECT_NAME}/blazegraph-journal/blazegraph.jnl.backup
       - FOLDERS_TO_BACKUP_RUNTIME=/data/${COMPOSE_PROJECT_NAME}/runtime-data
-     #- FOLDERS_TO_BACKUP_RUNTIME=/apps/performing-arts-ch/researchspace-runtime-data
       - KEEP_BACKUP_DAYS=${KEEP_BACKUP_DAYS}
       - S3_BUCKET_URL=${S3_BUCKET_URL}
       - ENDPOINT_URL=${ENDPOINT_URL}
