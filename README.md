@@ -114,10 +114,23 @@ These are used to upload the backup.
  2. Add the `callToBackup.sh` script, e.g.:
  
 	```bash
-	0 4 */5 * 1-5 /docker-compose/backup/callToBackup.sh >> /docker-compose/backup/cron_backups.log 2>&1
+	0 4 * * * /docker-compose/backup/callToBackup.sh >> /docker-compose/backup/cron_backups.log 2>&1
 	```
-3. _This will also create a log file within the backup container directory. It is enterily optional_
+	_(logfile creation is optional)_
 4. Save it and exit.
+
+
+#### Restore a backup
+
+Restoring a backup is simple:
+
+1. Stop all running services
+2. Extract the backup archives (e.g. `tar -xvzf dev-*-backup-2020-08-08_04-01.tar.gz`, which will extract both the Blazegraph and the Metaphactory backups)
+3. Copy the files you want to restore over the ones currently in use (e.g. `gunzip -c ./data/dev/blazegraph-journal/blazegraph.jnl.backup.gz > /data/dev/blazegraph-journal/blazegraph.jnl`)
+4. Start the services again
+
+If you want to restore an older backup, you'd probably have to copy it onto the server before running the above steps.
+
 
 ## General troubleshooting
 
