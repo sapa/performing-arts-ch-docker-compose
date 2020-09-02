@@ -4,8 +4,8 @@ services:
     #blazegraph-overwites here
     #ports:
     # - "10214:8080"
-    #environment:
-    #  - JAVA_OPTS=-Xmx2g
+    environment:
+      - JAVA_OPTS=-Xmx8g
   metaphactory:
     #metaphactory-overwites here
     ports:
