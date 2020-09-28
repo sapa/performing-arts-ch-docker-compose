@@ -95,6 +95,8 @@ This file will be referenced at *docker-compose.yml* files. (*env_file:*)
 
 The backup process will be triggered by a script on the host machine. Typically you want to automate this with a cronjob.
 
+The backup script takes an argument, that determines in which environment it is run; this coresponds to the env-directories used for metaphactory and its docker-compose overwrite and .env files.
+
 #### Setup environment variables
 
 1. Inside `../docker-compose/backup/docker-compose.yml` there is a reference to `/data/secrets/aws_secrets.env`
@@ -114,7 +116,7 @@ These are used to upload the backup.
  2. Add the `callToBackup.sh` script, e.g.:
  
 	```bash
-	0 4 * * * /docker-compose/backup/callToBackup.sh >> /docker-compose/backup/cron_backups.log 2>&1
+	0 4 * * * /docker-compose/backup/callToBackup.sh dev >> /docker-compose/backup/cron_backups.log 2>&1
 	```
 	_(logfile creation is optional)_
 4. Save it and exit.
