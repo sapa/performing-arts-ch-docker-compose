@@ -2,42 +2,32 @@
 
 set -e
 
-# This file shall be executed by a cronjon to trigger the backup process
 PATH_TO_SCRIPT=/home/ubuntu/performing-arts-ch-docker-compose/backup/
-
-### ADD THE NAME OF ANY ENVIRONMENT TO BE BACKED UP TO THIS ARRAY
-declare -a environments=(
-    "dev"
-   # "prod"
-)
-
 backup_date=$(date +%Y-%m-%d_%H-%M)
 
+if [ -z "$1" ]; then
+    echo "[E] No argument supplied. Has be one of 'dev' or 'prod'"
+    exit 1
+fi
+environment=${1}
 
-#### START CODE, DO NOT EDIT ####
-# backup function
-# takes the name of the environment as a parameter
-function backup {
-    echo "[${backup_date}] Starting backup for ${environment}"
+for i in $(seq 1 50); do printf "="; done
+echo ""
+echo "[I] Starting backup for ${environment} on ${backup_date}"
 
-    echo "-> starting online backup of Blazegraph"
-    blazegraph_container_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${environment}-blazegraph)
-    curl --data-urlencode "file=/blazegraph-data/blazegraph.jnl.backup.gz" --data-urlencode "compress=true" http://${blazegraph_container_ip}:8080/blazegraph/backup
+echo "[I] starting online backup of Blazegraph"
+blazegraph_container_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${environment}-blazegraph)
+curl --data-urlencode "file=/blazegraph-data/blazegraph.jnl.backup.gz" --data-urlencode "compress=true" http://${blazegraph_container_ip}:8080/blazegraph/backup
 
-    echo "-> Navigating into working directory"
-    currentDir="$(pwd)"
-    cd ${PATH_TO_SCRIPT} || return
+echo "[I] Navigating into working directory"
+cd ${PATH_TO_SCRIPT} || return
 
-    cd ../metaphactory-blazegraph/"${environment}"/ || return
+# uses the environment of the blazegraph deployment to get access to specific variables, like COMPOSE_PROJECT_NAME
+cd ../metaphactory-blazegraph/"${environment}"/ || return
+echo "[I] Starting cron-backup container"
+docker-compose -f ../../backup/docker-compose.yml up
 
-    echo "-> Starting cron-backup container"
-    docker-compose -f ../../backup/docker-compose.yml up
+echo "[I] Finished backup for ${environment}"
+for i in $(seq 1 3); do echo ""; done
 
-    cd "${currentDir}" || return
-
-    echo "[${backup_date}] Finished backup for ${environment}"
-}
-
-for environment in "${environments[@]}"; do
-    backup "${environment}"
-done
+exit 0
