@@ -1,2 +1,3 @@
 metaphactory-blazegraph/setWebHookSecret.sh
 metaphactory-blazegraph/graphscope-service-template/
+backup/cron_backups.log
