@@ -12,6 +12,7 @@ services:
     env_file:
       - /data/secrets/aws_secret.env
     environment:
+      - TZ=Europe/Berlin
       - BACKUP_NAME=${COMPOSE_PROJECT_NAME}-backup
       - BACKUP_BASE_PATH=/data/backup
       - BACKUP_RUNTIME_NAME=${COMPOSE_PROJECT_NAME}-runtime-backup
